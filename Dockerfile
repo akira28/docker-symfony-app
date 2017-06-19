@@ -33,6 +33,7 @@ RUN set -xe \
 		intl \
 		pdo_mysql \
 		zip \
+		mcrypt \
 	&& pecl install apcu \
 	&& docker-php-ext-enable --ini-name 20-apcu.ini apcu \
 	&& docker-php-ext-enable --ini-name 05-opcache.ini opcache \
