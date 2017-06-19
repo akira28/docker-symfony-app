@@ -39,24 +39,24 @@ RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress
 
 WORKDIR /var/www/html
 
-COPY composer.json ./
-COPY composer.lock ./
+#COPY composer.json ./
+#COPY composer.lock ./
 
 RUN mkdir -p \
 		var/cache \
 		var/logs \
 		var/sessions \
-	&& composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress --no-suggest \
-	&& composer clear-cache \
+	#&& composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress --no-suggest \
+	#&& composer clear-cache \
 # Permissions hack because setfacl does not work on Mac and Windows
 	&& chown -R www-data var
 
-COPY app app/
-COPY bin bin/
-COPY src src/
-COPY web web/
+#COPY app app/
+#COPY bin bin/
+#COPY src src/
+#COPY web web/
 
-RUN composer dump-autoload --optimize --classmap-authoritative --no-dev
+#RUN composer dump-autoload --optimize --classmap-authoritative --no-dev
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-app-entrypoint
 RUN chmod +x /usr/local/bin/docker-app-entrypoint
