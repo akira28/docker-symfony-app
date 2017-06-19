@@ -1,5 +1,24 @@
 FROM php:7.1-fpm-alpine
 
+ARG "version=1.0-dev"
+ARG "build_date=unknown"
+ARG "commit_hash=unknown"
+ARG "vcs_url=unknown"
+ARG "vcs_branch=unknown"
+
+LABEL org.label-schema.vendor="8beets" \
+    org.label-schema.name="varnish" \
+    org.label-schema.description="Simple docker image for Symfony apps" \
+    org.label-schema.usage="/src/README.md" \
+    org.label-schema.url="https://github.com/akira28/docker-symfony-app/blob/master/README.md" \
+    org.label-schema.vcs-url=$vcs_url \
+    org.label-schema.vcs-branch=$vcs_branch \
+    org.label-schema.vcs-ref=$commit_hash \
+    org.label-schema.version=$version \
+    org.label-schema.schema-version="1.0" \
+    org.label-schema.docker.cmd.devel="" \
+    org.label-schema.build-date=$build_date
+
 RUN apk add --no-cache --virtual .persistent-deps \
 		git \
 		icu-libs \
@@ -39,24 +58,12 @@ RUN composer global require "hirak/prestissimo:^0.3" --prefer-dist --no-progress
 
 WORKDIR /var/www/html
 
-#COPY composer.json ./
-#COPY composer.lock ./
-
 RUN mkdir -p \
 		var/cache \
 		var/logs \
 		var/sessions \
-	#&& composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress --no-suggest \
-	#&& composer clear-cache \
 # Permissions hack because setfacl does not work on Mac and Windows
 	&& chown -R www-data var
-
-#COPY app app/
-#COPY bin bin/
-#COPY src src/
-#COPY web web/
-
-#RUN composer dump-autoload --optimize --classmap-authoritative --no-dev
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-app-entrypoint
 RUN chmod +x /usr/local/bin/docker-app-entrypoint
