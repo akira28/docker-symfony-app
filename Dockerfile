@@ -22,7 +22,8 @@ LABEL org.label-schema.vendor="8beets" \
 RUN apk add --no-cache --virtual .persistent-deps \
 		git \
 		icu-libs \
-		zlib
+		zlib \
+		libmcrypt-dev
 
 RUN set -xe \
 	&& apk add --no-cache --virtual .build-deps \
